@@ -11,6 +11,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+/**
+ * This is the service class for user
+ */
 @Service
 public class UserService {
     private final UserRepository userRepository;
@@ -25,6 +28,11 @@ public class UserService {
         this.authenticationManager = authentication;
     }
 
+    /**
+     * This method save the user in db and authenticate the user
+     * @param user user to save
+     * @param session actual http session
+     */
     public void registerUser(User user, HttpSession session) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
@@ -34,7 +42,6 @@ public class UserService {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         securityContext.setAuthentication(authentication);
 
-        // Guardar el SecurityContext en la sesión para que persista entre requests
         session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
     }
 }
